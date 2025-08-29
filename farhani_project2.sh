@@ -11,8 +11,8 @@ conda create -n funtools
 # 3. Activate the funtools environment
 conda activate funtools
 
-# 4. Install Figlet using conda
-conda install -c conda-forge figlet
+# 4. Install Figlet using sudo apt-get
+sudo apt-get install figlet
 
 # 5. Run figlet <your name>
 figlet farhani
@@ -40,4 +40,5 @@ conda install -c bioconda bcftools
 conda install -c bioconda bcftools
 
 #13. Install multiqc through the bioconda channel
+
 conda install -c bioconda multiqc
