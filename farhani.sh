@@ -3,24 +3,26 @@
 
 # 1. Print your name
 name=farhani
-echo $name
+echi $name
 
 # 2. Create a folder titled your name
 mkdir farhani
 
 # 3. Create another new directory titled biocomputing and change to that directory with one line of command
-mkdir -p farhani/biocomputing
+mkdir biocomputing && cd biocomputing
 
 # 4. Download these 3 files:
 wget https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.fna \
      https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk \
      https://raw.githubusercontent.com/josoga2/dataset-repos/main/wildtype.gbk
-
+     
 # 5. Move the .fna file to the folder titled your name
-mv wildtype.fna farhani/ && mv wildtype.gbk farhani/ && mv wildtype.gbk.1 farhani/
+mv wildtype.fna wildtype.gbk wildtype.gbk.1 ../farhani
 
-# 6. Delete the duplicate gbk file
-rm farhani/wildtype.gbk.1
+#6. Delete the duplicate gbk file
+rm ../farhani/wildtype.gbk.1
+
+cd ../farhani/
 
 # 7. Confirm if the .fna file is mutant or wild type (tatatata vs tata)
 grep 'tatatata' farhani/wildtype.fna
