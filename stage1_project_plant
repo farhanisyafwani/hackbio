@@ -2,14 +2,14 @@
 # Pipeline: QC -> Trimming -> Mapping -> Variant Calling
 # Samples: Asian (SRR32764071, SRR32764072), European (SRR7135493, SRR7135521)
 
-# 1. Buat folder output
+#create directory
 mkdir -p qc trim align variants
 
-# 2. Quality Control awal
+#quality control fastqc
 fastqc SRR*_1.fastq.gz SRR*_2.fastq.gz -o qc/
 multiqc qc/ -o qc/
 
-# 3. Trimming dengan fastp
+#trimming
 samples=("SRR32764071" "SRR32764072" "SRR7135493" "SRR7135521")
 
 for s in "${samples[@]}"; do
@@ -18,30 +18,30 @@ for s in "${samples[@]}"; do
           -h trim/${s}.html -j trim/${s}.json -w 8
 done
 
-# 4. Index reference genome
+#index the reference genome
 bwa index reference.fasta
 samtools faidx reference.fasta
 
-# 5. Mapping dengan BWA MEM
+#mapping 
 bwa mem -t 8 reference.fasta trim/SRR32764071_1.trim.fastq.gz trim/SRR32764071_2.trim.fastq.gz > align/asian1.sam
 bwa mem -t 8 reference.fasta trim/SRR32764072_1.trim.fastq.gz trim/SRR32764072_2.trim.fastq.gz > align/asian2.sam
 bwa mem -t 8 reference.fasta trim/SRR7135493_1.trim.fastq.gz trim/SRR7135493_2.trim.fastq.gz > align/euro1.sam
 bwa mem -t 8 reference.fasta trim/SRR7135521_1.trim.fastq.gz trim/SRR7135521_2.trim.fastq.gz > align/euro2.sam
 
-# 6. Convert SAM -> BAM, Sort, Index
+#convert SAM to BAM, Sort, Index
 for sample in asian1 asian2 euro1 euro2; do
     samtools view -S -b align/${sample}.sam > align/${sample}.bam
     samtools sort align/${sample}.bam -o align/${sample}.sorted.bam
     samtools index align/${sample}.sorted.bam
 done
 
-# 7. Variant Calling dengan BCFtools
+#Variant Calling - BCFtools
 samtools mpileup -f reference.fasta \
     align/asian1.sorted.bam align/asian2.sorted.bam \
     align/euro1.sorted.bam align/euro2.sorted.bam \
     | bcftools call -mv -Oz -o variants/allsamples.vcf.gz
 
-# 8. Index VCF
+#index vcf
 bcftools index variants/allsamples.vcf.gz
 
-echo "✅ Pipeline selesai! Hasil akhir ada di variants/allsamples.vcf.gz"
+echo "doneeeeeeeeee!"
