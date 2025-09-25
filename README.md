@@ -1,2 +1,2 @@
-# Hackbio Project 2025 - NGS Funcamentals 
+# Hackbio Project 2025 - NGS Fundamentals 
 Hackbio project
